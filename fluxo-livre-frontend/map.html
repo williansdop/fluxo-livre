@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fluxo Livre - Mapeamento de Acessibilidade</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <a href="index.html" class="logo-link" title="Voltar ao início">
+            <img src="assets/logo.png" alt="Fluxo Livre" class="app-logo">
+        </a>
+    </header>
+
+    <div id="map"></div>
+
+    <button id="btn-add-obstacle" class="fab-btn" title="Adicionar Obstáculo">+</button>
+
+    <div id="modal-obstacle" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>Cadastrar Obstáculo</h2>
+            <p class="modal-instruction">Informe os detalhes do obstáculo identificado.</p>
+            
+            <form id="form-obstacle">
+                <div class="form-group">
+                    <label for="title">Título:</label>
+                    <input type="text" id="title" placeholder="Ex: Calçada esburacada, Rampa ausente" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descrição:</label>
+                    <textarea id="description" rows="3" placeholder="Ex: Buraco grande próximo ao poste, impedindo passagem de cadeirantes..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="obstacle_category_id">Tipo de Obstáculo:</label>
+                    <select id="obstacle_category_id" required>
+                        <option value="">Carregando categorias...</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="latitude">Lat:</label>
+                        <input type="text" id="latitude" disabled placeholder="-25.4284" class="input-readonly">
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Lng:</label>
+                        <input type="text" id="longitude" disabled placeholder="-49.2733" class="input-readonly">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" id="btn-cancel" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>

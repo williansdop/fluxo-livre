@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Fluxo Livre</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+
+    <main class="auth-container">
+        <img src="assets/logo.png" alt="Fluxo Livre" class="auth-logo">
+        
+        <form id="form-login" class="auth-form">
+            <h2>Entrar na conta</h2>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" required placeholder="seu@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn-primary btn-block">Entrar</button>
+
+            <div class="auth-links">
+                <p class="register-text">
+                    Ainda não tem conta? <a href="register.html" class="link-highlight">Cadastre-se</a>
+                </p>
+                <a href="index.html" class="btn-link">Voltar ao início</a>
+            </div>
+        </form>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
