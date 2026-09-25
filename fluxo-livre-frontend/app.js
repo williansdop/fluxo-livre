@@ -5,7 +5,7 @@
 // const API_BASE_URL = 'http://fluxo-livre-backend.test/api';
 
 // prod
-const API_BASE_URL = 'https://fluxo-livre-api.onrender.com';
+const API_BASE_URL = 'https://fluxo-livre-api.onrender.com/api';
 
 // Production environment
 // const API_BASE_URL = 'https://xxxx.railway.app/api';
