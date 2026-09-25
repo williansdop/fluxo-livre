@@ -26,6 +26,96 @@ if (mapElement) {
 
     let markersGroup = L.layerGroup().addTo(map);
 
+    // USER CURRENT LOCATION
+    let userLocationMarker = null;
+
+    const userLocationIcon = L.divIcon({
+        className: 'user-location-wrapper',
+        html: `
+            <div class="user-location-marker">
+                <div class="pulse-ring"></div>
+                <div class="location-dot"></div>
+            </div>
+        `,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+    });
+
+    function updateUserLocation(lat, lng, panTo = false) {
+        if (!userLocationMarker) {
+            userLocationMarker = L.marker([lat, lng], {
+                icon: userLocationIcon,
+                zIndexOffset: 1000,
+                title: 'Sua localização atual'
+            }).addTo(map);
+
+            userLocationMarker.bindPopup('<b>Você está aqui</b>');
+        } else {
+            userLocationMarker.setLatLng([lat, lng]);
+        }
+
+        if (panTo) {
+            map.flyTo([lat, lng], 15, { duration: 1.2 });
+        }
+    }
+
+    function locateUser(panTo = false) {
+        if (!navigator.geolocation) {
+            if (panTo) alert('Geolocalização não é suportada pelo seu navegador.');
+            return;
+        }
+
+        const handleSuccess = (position) => {
+            const { latitude, longitude } = position.coords;
+            updateUserLocation(latitude, longitude, panTo);
+        };
+
+        const tryLowAccuracy = () => {
+            navigator.geolocation.getCurrentPosition(
+                handleSuccess,
+                (error) => {
+                    console.warn('Erro ao obter localização do usuário:', error.message);
+                    if (panTo) {
+                        alert('Não foi possível obter sua localização. Verifique as permissões de localização do navegador.');
+                    }
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 15000,
+                    maximumAge: 300000
+                }
+            );
+        };
+
+        navigator.geolocation.getCurrentPosition(
+            handleSuccess,
+            (error) => {
+                // PCs/laptops without GPS hardware frequently timeout on enableHighAccuracy
+                if (error.code === error.TIMEOUT || error.code === error.POSITION_UNAVAILABLE) {
+                    tryLowAccuracy();
+                } else {
+                    console.warn('Erro ao obter localização do usuário:', error.message);
+                    if (panTo) {
+                        alert('Permissão de localização negada ou indisponível.');
+                    }
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 60000
+            }
+        );
+    }
+
+    // Try locating user on load
+    locateUser(false);
+
+    const btnLocateMe = document.getElementById('btn-locate-me');
+    if (btnLocateMe) {
+        btnLocateMe.addEventListener('click', () => locateUser(true));
+    }
+
     // 2. FETCH OBSTACLES (GET)
     async function loadObstacles() {
         try {
