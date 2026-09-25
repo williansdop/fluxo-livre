@@ -137,6 +137,7 @@ if (mapElement) {
             }
             const categoryId = document.getElementById('obstacle_category_id').value;
             
+            const userId = localStorage.getItem('user_id');
             const payload = {
                 title: document.getElementById('title').value,
                 category_id: categoryId,
@@ -144,6 +145,9 @@ if (mapElement) {
                 latitude: parseFloat(document.getElementById('latitude').value),
                 longitude: parseFloat(document.getElementById('longitude').value)
             };
+            if (userId) {
+                payload.user_id = parseInt(userId, 10);
+            }
 
             try {
                 const response = await fetch(`${API_BASE_URL}/obstacles/create`, {
@@ -203,11 +207,15 @@ if (loginForm) {
             const token = data.token || (data.data && data.data.token);
             const user = data.user || (data.data && data.data.user);
             const firstName = (user && user.first_name) || (data.data && data.data.first_name);
+            const userId = (user && user.id) || (data.data && (data.data.id || data.data.user_id));
 
             if (response.ok && token) {
                 localStorage.setItem('auth_token', token);
                 if (firstName) {
                     localStorage.setItem('user_first_name', firstName);
+                }
+                if (userId) {
+                    localStorage.setItem('user_id', userId);
                 }
                 alert('Login efetuado com sucesso!');
                 window.location.href = 'map.html';
@@ -263,11 +271,15 @@ if (registerForm) {
             const token = result.token || (result.data && result.data.token);
             const user = result.user || (result.data && result.data.user);
             const firstName = (user && user.first_name) || (result.data && result.data.first_name) || document.getElementById('first_name').value;
+            const userId = (user && user.id) || (result.data && (result.data.id || result.data.user_id));
 
             if (response.ok && token) {
                 localStorage.setItem('auth_token', token);
                 if (firstName) {
                     localStorage.setItem('user_first_name', firstName);
+                }
+                if (userId) {
+                    localStorage.setItem('user_id', userId);
                 }
                 alert('Conta criada com sucesso!');
                 
@@ -353,12 +365,17 @@ async function initUserHeader() {
             if (res.ok) {
                 const data = await res.json();
                 firstName = (data.data && data.data.first_name) || data.first_name;
+                const userId = (data.data && data.data.id) || data.id;
                 if (firstName) {
                     localStorage.setItem('user_first_name', firstName);
+                }
+                if (userId) {
+                    localStorage.setItem('user_id', userId);
                 }
             } else if (res.status === 401) {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('user_first_name');
+                localStorage.removeItem('user_id');
                 initUserHeader();
                 return;
             }
@@ -408,6 +425,7 @@ async function handleLogout() {
     } finally {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_first_name');
+        localStorage.removeItem('user_id');
         initUserHeader();
     }
 }
