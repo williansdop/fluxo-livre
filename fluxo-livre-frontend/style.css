@@ -170,8 +170,9 @@ html, body {
     padding: 16px;
 }
 
+.hidden,
 .modal-overlay.hidden {
-    display: none;
+    display: none !important;
 }
 
 .modal-content {
@@ -215,6 +216,39 @@ html, body {
     font-size: 0.95rem;
     font-family: inherit;
     resize: vertical;
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 42px;
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #64748B;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 6px;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.btn-toggle-password:hover {
+    color: #1E5CFA;
+    background-color: #f1f5f9;
 }
 
 .form-row {
