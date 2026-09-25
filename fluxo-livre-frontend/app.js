@@ -61,6 +61,8 @@ if (mapElement) {
 
     // 3. SUBMIT NEW OBSTACLE (POST)
     const modal = document.getElementById('modal-obstacle');
+    const modalAuthWarning = document.getElementById('modal-auth-warning');
+    const btnBackToMap = document.getElementById('btn-back-to-map');
     const btnAdd = document.getElementById('btn-add-obstacle');
     const btnCancel = document.getElementById('btn-cancel');
     const form = document.getElementById('form-obstacle');
@@ -68,10 +70,32 @@ if (mapElement) {
     let tempMarker = null;
     let isAddingMode = false;
 
+    if (btnBackToMap && modalAuthWarning) {
+        btnBackToMap.addEventListener('click', () => {
+            modalAuthWarning.classList.add('hidden');
+        });
+    }
+
+    if (modalAuthWarning) {
+        modalAuthWarning.addEventListener('click', (e) => {
+            if (e.target === modalAuthWarning) {
+                modalAuthWarning.classList.add('hidden');
+            }
+        });
+    }
+
     if (btnAdd) {
         btnAdd.addEventListener('click', () => {
+            const token = localStorage.getItem('auth_token');
+            if (!token) {
+                if (modalAuthWarning) {
+                    modalAuthWarning.classList.remove('hidden');
+                }
+                return;
+            }
+
             isAddingMode = true;
-            alert('Click on the exact map location where you want to add the obstacle.');
+            alert('Clique no local exato do mapa onde deseja adicionar o obstáculo.');
         });
     }
 
@@ -102,6 +126,15 @@ if (mapElement) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const authToken = localStorage.getItem('auth_token');
+            if (!authToken) {
+                modal.classList.add('hidden');
+                if (modalAuthWarning) {
+                    modalAuthWarning.classList.remove('hidden');
+                } else {
+                    alert('Você não está autenticado.');
+                }
+                return;
+            }
             const categoryId = document.getElementById('obstacle_category_id').value;
             
             const payload = {

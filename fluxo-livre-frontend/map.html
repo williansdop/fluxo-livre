@@ -64,6 +64,24 @@
         </div>
     </div>
 
+    <div id="modal-auth-warning" class="modal-overlay hidden">
+        <div class="modal-content modal-auth-warning-content">
+            <div class="modal-auth-icon">
+                <svg viewBox="0 0 24 24" width="36" height="36" stroke="#1E5CFA" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <h2>Você não está autenticado</h2>
+            <p class="modal-instruction">Para cadastrar novos obstáculos, você precisa estar conectado à sua conta.</p>
+            <div class="modal-actions-auth">
+                <a href="login.html" class="btn-primary">Fazer Login</a>
+                <button type="button" id="btn-back-to-map" class="btn-secondary">Apenas Visualizar o Mapa</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script src="app.js"></script>
