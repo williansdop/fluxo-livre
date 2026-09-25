@@ -2,10 +2,10 @@
 // API CONFIGURATION
 // ==========================================
 // dev
-// const API_BASE_URL = 'http://fluxo-livre-backend.test/api';
+const API_BASE_URL = 'http://fluxo-livre-backend.test/api';
 
 // prod
-const API_BASE_URL = 'https://fluxo-livre-api.onrender.com/api';
+// const API_BASE_URL = 'https://fluxo-livre-api.onrender.com/api';
 
 // Production environment
 // const API_BASE_URL = 'https://xxxx.railway.app/api';
@@ -167,8 +167,15 @@ if (loginForm) {
 
             const data = await response.json();
 
-            if (response.ok && data.token) {
-                localStorage.setItem('auth_token', data.token);
+            const token = data.token || (data.data && data.data.token);
+            const user = data.user || (data.data && data.data.user);
+            const firstName = (user && user.first_name) || (data.data && data.data.first_name);
+
+            if (response.ok && token) {
+                localStorage.setItem('auth_token', token);
+                if (firstName) {
+                    localStorage.setItem('user_first_name', firstName);
+                }
                 alert('Login efetuado com sucesso!');
                 window.location.href = 'map.html';
             } else {
@@ -221,9 +228,14 @@ if (registerForm) {
             console.log('Resposta do Servidor:', result);
 
             const token = result.token || (result.data && result.data.token);
+            const user = result.user || (result.data && result.data.user);
+            const firstName = (user && user.first_name) || (result.data && result.data.first_name) || document.getElementById('first_name').value;
 
             if (response.ok && token) {
                 localStorage.setItem('auth_token', token);
+                if (firstName) {
+                    localStorage.setItem('user_first_name', firstName);
+                }
                 alert('Conta criada com sucesso!');
                 
                 window.location.assign('map.html');
@@ -277,3 +289,94 @@ async function loadObstacleCategories() {
         categorySelect.innerHTML = '<option value="">Erro de conexão</option>';
     }
 }
+
+// ==========================================
+// USER AUTH STATE & TOP BAR
+// ==========================================
+async function initUserHeader() {
+    const userHeader = document.getElementById('user-header');
+    if (!userHeader) return;
+
+    const token = localStorage.getItem('auth_token');
+    let firstName = localStorage.getItem('user_first_name');
+
+    if (!token) {
+        userHeader.innerHTML = `
+            <a href="login.html" class="header-login-btn">
+                <span>Entrar</span>
+            </a>
+        `;
+        return;
+    }
+
+    if (!firstName) {
+        try {
+            const res = await fetch(`${API_BASE_URL}/me`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                firstName = (data.data && data.data.first_name) || data.first_name;
+                if (firstName) {
+                    localStorage.setItem('user_first_name', firstName);
+                }
+            } else if (res.status === 401) {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('user_first_name');
+                initUserHeader();
+                return;
+            }
+        } catch (e) {
+            console.warn('Could not fetch user details:', e);
+        }
+    }
+
+    const displayName = firstName || 'Usuário';
+
+    userHeader.innerHTML = `
+        <button type="button" class="user-pill-btn" id="btn-user-profile" title="Clique para sair">
+            <svg class="user-pill-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="user-pill-name">${displayName}</span>
+            <span class="user-pill-logout-badge">Sair</span>
+        </button>
+    `;
+
+    const btnProfile = document.getElementById('btn-user-profile');
+    if (btnProfile) {
+        btnProfile.addEventListener('click', handleLogout);
+    }
+}
+
+async function handleLogout() {
+    const firstName = localStorage.getItem('user_first_name') || 'usuário';
+    const confirmed = confirm(`Deseja realmente sair da sua conta, ${firstName}?`);
+    if (!confirmed) return;
+
+    const token = localStorage.getItem('auth_token');
+
+    try {
+        if (token) {
+            await fetch(`${API_BASE_URL}/logout`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+        }
+    } catch (err) {
+        console.error('Logout error:', err);
+    } finally {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_first_name');
+        initUserHeader();
+    }
+}
+
+initUserHeader();
