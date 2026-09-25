@@ -1,7 +1,11 @@
 // ==========================================
 // API CONFIGURATION
 // ==========================================
-const API_BASE_URL = 'http://fluxo-livre-backend.test/api';
+// dev
+// const API_BASE_URL = 'http://fluxo-livre-backend.test/api';
+
+// prod
+const API_BASE_URL = 'https://fluxo-livre-api.onrender.com';
 
 // Production environment
 // const API_BASE_URL = 'https://xxxx.railway.app/api';
