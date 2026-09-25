@@ -16,12 +16,18 @@ html, body {
     height: 100vh; /* Faz o mapa ocupar 100% da tela do celular */
 }
 
+/* Reposiciona o controle de zoom (+/-) abaixo do header para não sobrepor no celular */
+.leaflet-top.leaflet-left {
+    top: 70px;
+    left: 12px;
+}
+
 .app-header {
     position: absolute;
     top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
+    z-index: 1100;
     
     width: calc(100% - 32px);
     max-width: 600px;
