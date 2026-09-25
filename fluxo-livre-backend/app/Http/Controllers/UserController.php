@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -66,6 +67,51 @@ class UserController extends Controller
                 false,
                 null,
                 'Ocorreu um erro inesperado durante o login',
+                500
+            );
+        }
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            if ($user && $user->currentAccessToken()) {
+                $user->currentAccessToken()->delete();
+            }
+
+            return $this->jsonResponse(true, null, 'Logout realizado com sucesso.');
+        } catch (Throwable $e) {
+            Log::error('Logout failed: ' . $e->getMessage(), ['exception' => $e]);
+
+            return $this->jsonResponse(
+                false,
+                null,
+                'Ocorreu um erro inesperado durante o logout.',
+                500
+            );
+        }
+    }
+
+    public function me(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            return $this->jsonResponse(true, [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+            ], 'Dados do usuário obtidos com sucesso.');
+        } catch (Throwable $e) {
+            Log::error('Me failed: ' . $e->getMessage(), ['exception' => $e]);
+
+            return $this->jsonResponse(
+                false,
+                null,
+                'Ocorreu um erro ao recuperar dados do usuário.',
                 500
             );
         }

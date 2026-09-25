@@ -15,8 +15,7 @@ class ObstacleService
      */
     public function createObstacle(array $obstacleData): Obstacle
     {
-        $obstacle = Obstacle::create($obstacleData);
-        return $obstacle;
+        return Obstacle::create($obstacleData);
     }
 
     /**

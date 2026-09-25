@@ -12,6 +12,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::get('/me', [UserController::class, 'me'])->name('me');
+
     Route::prefix('obstacles')->name('api.obstacles.')->group(function () {
         Route::post('/create', [ObstacleController::class, 'createObstacle'])->name('create');
     });

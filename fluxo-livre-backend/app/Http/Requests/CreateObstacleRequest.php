@@ -31,6 +31,7 @@ class CreateObstacleRequest extends FormRequest
             'latitude'  => ['required', 'numeric', 'between:-90,90'],
             'longitude' => ['required', 'numeric', 'between:-180,180'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'user_id' => ['nullable', 'integer', 'exists:users,id'],
         ];
     }
 }

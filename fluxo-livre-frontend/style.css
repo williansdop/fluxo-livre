@@ -16,21 +16,109 @@ html, body {
     height: 100vh; /* Faz o mapa ocupar 100% da tela do celular */
 }
 
+/* Reposiciona o controle de zoom (+/-) abaixo do header para não sobrepor no celular */
+.leaflet-top.leaflet-left {
+    top: 70px;
+    left: 12px;
+}
+
 .app-header {
     position: absolute;
     top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
+    z-index: 1100;
     
+    width: calc(100% - 32px);
+    max-width: 600px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     
     background: rgba(255, 255, 255, 0.95);
-    padding: 6px 16px;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0f4ff;
+    border: 1px solid #d4e0fc;
+    color: #1E5CFA;
+    padding: 5px 12px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.user-pill-btn:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #dc2626;
+}
+
+.user-pill-icon {
+    flex-shrink: 0;
+}
+
+.user-pill-name {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-pill-logout-badge {
+    font-size: 11px;
+    font-weight: 500;
+    background: #e2e8f0;
+    color: #64748b;
+    padding: 2px 6px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.user-pill-btn:hover .user-pill-logout-badge {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.header-login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #1E5CFA;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+    font-family: inherit;
+}
+
+.header-login-btn:hover {
+    background: #1447c7;
 }
 
 .app-logo {
@@ -157,6 +245,42 @@ html, body {
 .btn-secondary {
     background-color: #E2E8F0;
     color: #475569;
+}
+
+.modal-auth-warning-content {
+    text-align: center;
+    max-width: 360px;
+    padding: 28px 24px;
+}
+
+.modal-auth-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #eff6ff;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+
+.modal-actions-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-actions-auth .btn-primary,
+.modal-actions-auth .btn-secondary {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    font-family: inherit;
 }
 
 .home-body {
