@@ -430,4 +430,35 @@ async function handleLogout() {
     }
 }
 
+// Automatically initialize user state on page load
 initUserHeader();
+
+// ==========================================
+// PASSWORD VISIBILITY TOGGLE
+// ==========================================
+function initPasswordToggles() {
+    const toggleButtons = document.querySelectorAll('.btn-toggle-password');
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const wrapper = btn.closest('.password-wrapper');
+            if (!wrapper) return;
+            const input = wrapper.querySelector('input');
+            if (!input) return;
+
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+
+            const iconEye = btn.querySelector('.icon-eye');
+            const iconEyeOff = btn.querySelector('.icon-eye-off');
+            if (iconEye && iconEyeOff) {
+                iconEye.classList.toggle('hidden', isPassword);
+                iconEyeOff.classList.toggle('hidden', !isPassword);
+            }
+            btn.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Ver senha');
+            input.focus();
+        });
+    });
+}
+
+initPasswordToggles();
