@@ -75,6 +75,38 @@
         </div>
     </div>
 
+    <div id="modal-edit-obstacle" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>Editar Obstáculo</h2>
+            
+            <form id="form-edit-obstacle">
+                <input type="hidden" id="edit-obstacle-id">
+
+                <div class="form-group">
+                    <label for="edit-title">Título:</label>
+                    <input type="text" id="edit-title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-description">Descrição:</label>
+                    <textarea id="edit-description" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-category-id">Tipo de Obstáculo:</label>
+                    <select id="edit-category-id" required>
+                        <!-- Preenchido dinamicamente ou replicado do select de cadastro -->
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="document.getElementById('modal-edit-obstacle').classList.add('hidden')" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Atualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="modal-auth-warning" class="modal-overlay hidden">
         <div class="modal-content modal-auth-warning-content">
             <div class="modal-auth-icon">

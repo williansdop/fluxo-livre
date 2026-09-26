@@ -17,10 +17,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('obstacles')->name('api.obstacles.')->group(function () {
         Route::post('/create', [ObstacleController::class, 'createObstacle'])->name('create');
+        Route::put('/{id}', [ObstacleController::class, 'updateObstacle']);
+        Route::delete('/{id}', [ObstacleController::class, 'deleteObstacle']);
+        Route::get('/{id}', [ObstacleController::class, 'getObstacle'])->name('get-obstacle');
     });
 });
 
-Route::get('/obstacles/{id}', [ObstacleController::class, 'getObstacle'])->name('get-obstacle');
 Route::get('/obstacles', [ObstacleController::class, 'getAllObstacles'])->name('get-all-obstacles');
 
 Route::get('/obstacle-categories', [CategoryController::class, 'getAllCategories'])->name('get-all-categories');
