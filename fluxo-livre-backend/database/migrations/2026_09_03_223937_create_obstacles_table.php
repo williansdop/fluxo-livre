@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('longitude', 11, 8);
             $table->timestamps();
             $table->index(['latitude', 'longitude']);
+            $table->softDeletes();
         });
     }
 

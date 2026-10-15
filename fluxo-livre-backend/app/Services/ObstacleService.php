@@ -15,8 +15,7 @@ class ObstacleService
      */
     public function createObstacle(array $obstacleData): Obstacle
     {
-        $obstacle = Obstacle::create($obstacleData);
-        return $obstacle;
+        return Obstacle::create($obstacleData);
     }
 
     /**
@@ -42,5 +41,29 @@ class ObstacleService
         $obstacles = Obstacle::with(['category:id,title,icon', 'user:id,first_name,last_name'])->get();
 
         return $obstacles;
+    }
+
+    /**
+     * Handle incoming obstacle update requests.
+     *
+     * @param  Obstacle  $obstacle
+     * @param  array     $data
+     * @return Obstacle
+     */
+    public function updateObstacle(Obstacle $obstacle, array $data): Obstacle
+    {
+        $obstacle->update($data);
+        return $obstacle->fresh(['category:id,title,icon', 'user:id,first_name,last_name']);
+    }
+
+    /**
+     * Handle incoming obstacle deletion requests.
+     *
+     * @param  Obstacle  $obstacle
+     * @return void
+     */
+    public function deleteObstacle(Obstacle $obstacle): void
+    {
+        $obstacle->delete();
     }
 }
